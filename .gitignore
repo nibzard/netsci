@@ -4,7 +4,6 @@ __pycache__/
 *$py.class
 *.so
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -53,9 +52,9 @@ data/raw/*
 data/processed/*
 !data/processed/.gitkeep
 
-# Environment
+# Local environments
 .env
-.venv
-env/
-venv/
-ENV/
+/.venv/
+/env/
+/venv/
+/ENV/

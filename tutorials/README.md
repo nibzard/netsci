@@ -10,45 +10,29 @@ Tutorials are organized to complement the lecture materials, providing hands-on 
 
 ### Requirements
 
-Make sure you have the necessary Python packages installed.
-
-#### Option 1: Using uv (Recommended)
+Use the project-local `.venv` managed by `uv`.
 
 [uv](https://docs.astral.sh/uv/) is a fast Python package installer and resolver.
 
 ```bash
-# Install uv if you don't have it already
-pip install uv
+# Install uv if needed
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Create a virtual environment in the project root
+# Create the project environment in the project root
 cd ..
-uv venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install all requirements
-uv pip install -r requirements.txt
+uv sync
 ```
 
-#### Option 2: Using pip
-
-```bash
-# Create a virtual environment in the project root
-cd ..
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install core packages
-pip install jupyter networkx pandas numpy matplotlib seaborn scikit-learn plotly
-```
+Do not rely on a checked-in `env/` directory. Recreate `.venv/` locally with `uv sync` when needed.
 
 ### Launch Jupyter
 
-From the activated virtual environment:
+From the repository root:
 
 ```bash
-jupyter notebook
+uv run jupyter lab
 # or
-jupyter lab
+uv run jupyter notebook
 ```
 
 ## Topics Covered

@@ -1,6 +1,8 @@
 import subprocess
 import re
 import sys
+from pathlib import Path
+import tomllib
 
 def get_latest_version(package_name):
     try:
@@ -34,36 +36,30 @@ def get_latest_version(package_name):
         return f"Error: {str(e)}"
 
 def main():
-    # Parse requirements file
-    with open("requirements.txt", "r") as f:
-        requirements = f.readlines()
-    
-    updated_requirements = []
-    
-    for line in requirements:
-        # Skip comments and empty lines
-        if line.strip().startswith("#") or not line.strip():
-            updated_requirements.append(line)
-            continue
-        
-        # Extract package name and version constraint
-        match = re.match(r'([a-zA-Z0-9_-]+)([<>=~!].+)?', line.strip())
+    pyproject_path = Path("pyproject.toml")
+    with pyproject_path.open("rb") as f:
+        pyproject = tomllib.load(f)
+
+    dependencies = pyproject.get("project", {}).get("dependencies", [])
+    updated_dependencies = []
+
+    for dependency in dependencies:
+        match = re.match(r'([a-zA-Z0-9_.-]+)([<>=~!].+)?', dependency)
         if match:
             package_name = match.group(1)
             latest_version = get_latest_version(package_name)
-            
+
             if latest_version != "Unknown":
-                updated_requirements.append(f"{package_name}>={latest_version}\n")
+                updated_dependencies.append(f"{package_name}>={latest_version}\n")
             else:
-                updated_requirements.append(line)
+                updated_dependencies.append(f"{dependency}\n")
         else:
-            updated_requirements.append(line)
-    
-    # Write updated requirements
-    with open("requirements.txt.new", "w") as f:
-        f.writelines(updated_requirements)
-    
-    print("Updated requirements written to requirements.txt.new")
+            updated_dependencies.append(f"{dependency}\n")
+
+    output_path = Path("pyproject.dependencies.new.txt")
+    output_path.write_text("".join(updated_dependencies))
+
+    print(f"Updated dependencies written to {output_path}")
 
 if __name__ == "__main__":
     main()

@@ -82,12 +82,12 @@ This structure ensures a balanced assessment of both theoretical knowledge and p
 
 ## Setting Up
 
-### Option 1: Using uv (Recommended)
+Use `uv` project management with the root `pyproject.toml` and `uv.lock`.
 
 [uv](https://docs.astral.sh/uv/) is a fast Python package installer and resolver.
 
 ```bash
-# Install UV
+# Install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
@@ -95,26 +95,15 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 # Clone the repository
 git clone https://github.com/nibzard/netsci.git
 
-# Create and activate a virtual environment
-uv venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install dependencies
-uv pip install -r requirements.txt
+# Create the project environment and install locked dependencies
+uv sync
 ```
 
-### Option 2: Using pip
+`uv sync` creates a local `.venv/` and installs the versions locked in `uv.lock`.
 
 ```bash
-# Clone the repository
-git clone https://github.com/nibzard/netsci.git
-
-# Create and activate a virtual environment
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
+# Run a script inside the project environment
+uv run python check_versions.py
 ```
 
 ## License

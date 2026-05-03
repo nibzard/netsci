@@ -216,30 +216,6 @@ Scale-free networks exhibit:
 
 ---
 
-## Real-World Scale-Free Networks
-
-![width:800px bg right:70%](images/real_world_examples.png)
-
----
-
-## Examples in Various Domains
-
-- **Internet:** Routers and connections
-- **World Wide Web:** Websites and hyperlinks
-- **Social Networks:** Twitter followers, scientific collaborations
-- **Biological Networks:** Protein interactions, metabolic networks
-- **Transportation:** Airline routes
-- **Citation Networks:** Scientific papers and citations
-- **Economic Networks:** Trade relationships, financial transactions
-
----
-
-## Network Model Comparison
-
-![width:1200px bg](images/network_comparison_table.png)
-
----
-
 ## Limitations of Pure Scale-Free Models
 
 Real networks often deviate from perfect power laws:
@@ -286,14 +262,37 @@ R, p = fit.distribution_compare('power_law', 'exponential')
 
 ---
 
-## Applications of Scale-Free Network Analysis
+## Real-World Scale-Free Networks
 
-- **Network Robustness:** Designing resilient infrastructure
-- **Epidemic Spreading:** Modeling disease transmission
-- **Targeted Interventions:** Identifying critical nodes
-- **Search Algorithms:** Finding information efficiently
-- **Recommendation Systems:** Leveraging network structure
-- **Marketing Strategies:** Identifying influential nodes
+![width:800px bg right:70%](images/real_world_examples.png)
+
+---
+
+## Examples in Various Domains
+
+- **Internet:** Routers and connections
+- **World Wide Web:** Websites and hyperlinks
+- **Social Networks:** Twitter followers, scientific collaborations
+- **Biological Networks:** Protein interactions, metabolic networks
+- **Transportation:** Airline routes
+- **Citation Networks:** Scientific papers and citations
+- **Economic Networks:** Trade relationships, financial transactions
+
+---
+
+## Network Model Comparison
+
+![width:1200px bg](images/network_comparison_table.png)
+
+---
+
+## What Scale-Free Structure Changes
+
+- **Hubs dominate outcomes:** A few nodes can control much of the flow
+- **Random failure is misleading:** Average-case damage can look small
+- **Targeted removal matters:** Attacking or protecting hubs changes the network quickly
+- **Spreading thresholds shift:** Hubs can sustain diffusion even when average degree is low
+- **Fairness concerns appear:** Hub-based strategies can reinforce existing visibility
 
 ---
 

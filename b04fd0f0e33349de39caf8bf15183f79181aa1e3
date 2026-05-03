@@ -1,0 +1,7 @@
+# Context
+
+## Background
+Review found that Lecture 8's scale-free examples could teach misleading statistical practice: raw counts in log-spaced bins, continuous power-law fitting for discrete degree data, and non-deterministic graph generation.
+
+## Why This Way
+Use discrete degree counts on log-log axes, seed NetworkX generators for reproducibility, and fit positive integer degrees with powerlaw's discrete mode.

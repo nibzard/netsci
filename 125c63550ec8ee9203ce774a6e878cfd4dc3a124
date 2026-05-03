@@ -1,0 +1,7 @@
+# Context
+
+## Background
+The Power-Law Degree Distribution slide image used log-spaced histogram densities for integer degree data, which created visual artifacts and mislabeled probability density as P(k).
+
+## Why This Way
+Compute empirical discrete P(k) for each observed degree, seed the generated comparison graphs, and keep the slide explainer concise enough to read like a speaker note.

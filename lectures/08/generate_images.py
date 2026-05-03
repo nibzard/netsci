@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import powerlaw
+from collections import Counter
 
 # Create images directory if it doesn't exist
 os.makedirs('images', exist_ok=True)
@@ -18,6 +19,13 @@ def save_figure(filename, title=None, figsize=(10, 8), dpi=120):
     plt.tight_layout()
     plt.savefig(f'images/{filename}', dpi=dpi)
     plt.close()
+
+def degree_probability(degrees):
+    """Return sorted degree values and their empirical probabilities."""
+    counts = Counter(degrees)
+    k_values = np.array(sorted(counts))
+    probabilities = np.array([counts[k] / len(degrees) for k in k_values])
+    return k_values, probabilities
 
 def generate_ba_networks():
     """Generate Barabási-Albert networks with different parameters."""
@@ -102,9 +110,9 @@ def generate_degree_distributions():
     n = 10000  # Increased from 5000
 
     # Create three different networks
-    ba_graph = nx.barabasi_albert_graph(n=n, m=2)  # Scale-free
-    er_graph = nx.erdos_renyi_graph(n=n, p=4/n)    # Random
-    ws_graph = nx.watts_strogatz_graph(n=n, k=4, p=0.1)  # Small-world
+    ba_graph = nx.barabasi_albert_graph(n=n, m=2, seed=42)  # Scale-free
+    er_graph = nx.erdos_renyi_graph(n=n, p=4/n, seed=42)    # Random
+    ws_graph = nx.watts_strogatz_graph(n=n, k=4, p=0.1, seed=42)  # Small-world
 
     # Extract degree distributions
     ba_degrees = [d for _, d in ba_graph.degree()]
@@ -126,48 +134,31 @@ def generate_degree_distributions():
     plt.savefig('images/degree_distributions_linear.png', dpi=120)
     plt.close()
 
-    # Figure 2: Improved log-log plot for clearer power-law visualization
+    # Figure 2: Log-log plot using empirical P(k) for each integer degree
     fig, ax = plt.subplots(figsize=(10, 6))
 
-    # Use binning with logarithmic bins for clearer visualization
-    max_degree = max(max(ba_degrees), max(er_degrees), max(ws_degrees))
-    min_degree = 1
-
-    # Calculate log-spaced bins
-    bins = np.logspace(np.log10(min_degree), np.log10(max_degree), 20)
-
-    # Compute histograms with density=True for proper probability comparison
-    ba_hist, ba_edges = np.histogram(ba_degrees, bins=bins, density=True)
-    er_hist, er_edges = np.histogram(er_degrees, bins=bins, density=True)
-
-    # Get bin centers for plotting
-    ba_centers = (ba_edges[1:] + ba_edges[:-1]) / 2
-    er_centers = (er_edges[1:] + er_edges[:-1]) / 2
-
-    # For WS (nearly regular graph), log-spaced bins produce erratic results.
-    # Compute P(k) per unique degree value instead.
-    from collections import Counter
-    ws_counts = Counter(ws_degrees)
-    ws_k = sorted(ws_counts.keys())
-    ws_p = [ws_counts[k] / len(ws_degrees) for k in ws_k]
+    ba_k, ba_p = degree_probability(ba_degrees)
+    er_k, er_p = degree_probability(er_degrees)
+    ws_k, ws_p = degree_probability(ws_degrees)
 
     # Create log-log plots with larger markers and clear lines
-    ax.loglog(ba_centers, ba_hist, 'o-', color='#3274A1', linewidth=2,
+    ax.loglog(ba_k, ba_p, 'o-', color='#3274A1', linewidth=2,
               markersize=8, label='BA (Scale-Free)')
-    ax.loglog(er_centers, er_hist, 'o-', color='#E1812C', linewidth=2,
+    ax.loglog(er_k, er_p, 'o-', color='#E1812C', linewidth=2,
               markersize=8, label='ER (Random)')
     ax.loglog(ws_k, ws_p, 'o-', color='#3A923A', linewidth=2,
               markersize=8, label='WS (Small-World)')
 
     # Draw a reference power-law line
     # Fit the BA network to find alpha
-    fit = powerlaw.Fit(ba_degrees)
+    fit = powerlaw.Fit(ba_degrees, discrete=True, verbose=False)
     alpha = fit.alpha
 
     # Plot a reference power-law line
+    max_degree = max(ba_degrees)
     k_range = np.logspace(np.log10(2), np.log10(max_degree/2), 10)
     # Adjust the normalization constant to match the BA data
-    norm_const = ba_hist[np.argmin(np.abs(ba_centers - 5))] * (5**alpha)
+    norm_const = ba_p[np.argmin(np.abs(ba_k - 5))] * (5**alpha)
     power_law = norm_const * k_range**(-alpha)
 
     ax.loglog(k_range, power_law, 'r--', linewidth=2.5,

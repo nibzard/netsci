@@ -12,7 +12,7 @@ Network Analysis - Lecture 8
 Nikola Balic, Faculty of Natural Science, University of Split
 Data Science and Engineering Master Program
 
-30/04/2025
+04/05/2026
 
 ---
 
@@ -40,6 +40,8 @@ These properties are observed in many real-world networks!
 Unlike random networks (Poisson distribution) or small-world networks (peaked near average), scale-free networks have a heavy-tailed degree distribution
 
 ![width:900px bg right:70%](images/degree_distributions.png)
+
+The BA curve decays slowly: many low-degree nodes, a few high-degree hubs.
 
 ---
 

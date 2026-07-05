@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+*.egg-info/
+.venv/
+venv/
+
+# Generated data artifacts -- reproducible from data/raw/ via src.preprocessing
+# and src.network_construction. Raw DZS source files are also excluded
+# pending manual download (see data/raw/DOWNLOAD_INSTRUCTIONS.md); only the
+# instructions file and directory structure are tracked.
+data/raw/*
+!data/raw/DOWNLOAD_INSTRUCTIONS.md
+data/interim/*
+data/processed/*
+!data/*/.gitkeep
